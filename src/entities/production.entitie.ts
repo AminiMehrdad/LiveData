@@ -8,7 +8,7 @@ import {
 import { Well } from './well.entitie';
 
 @Entity()
-@Index(['well', 'recordedAt']) // important for ordering & fast queries
+@Index(['well', 'date']) // important for ordering & fast queries
 export class ProductionData {
   @PrimaryGeneratedColumn()
   id: number;
@@ -19,37 +19,37 @@ export class ProductionData {
   @Column('timestamp')
   date: Date;
 
-  @Column('float')
+  @Column('float', { nullable: true })
   temperature_down?: number;
 
-  @Column('float')
+  @Column('float', { nullable: true })
   chock_size?: number;
 
-  @Column('float')
+  @Column('float', { nullable: true })
   pressure_top?: number;
 
-  @Column('float')
+  @Column('float', { nullable: true })
   temprature_top?: number;
 
-  @Column('float')
+  @Column('float', { nullable: true })
   chocke_pressure?: number;
 
-  @Column('float')
+  @Column('float', { nullable: true })
   oil?: number;
 
-  @Column('float')
+  @Column('float', { nullable: true })
   gas?: number;
 
-  @Column('float')
+  @Column('float', { nullable: true })
   water?: number;
 
-  @Column('float')
+  @Column('float', { nullable: true })
   water_i?: number;
 
-  @Column('string')
+  @Column('varchar', { nullable: true })
   FLOW_KIND?: string;
 
-  @Column('float')
+  @Column('float', { nullable: true })
   hover_open?: number;
 
   @Column('float', { nullable: true })

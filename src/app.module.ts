@@ -2,8 +2,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { MulterModule } from '@nestjs/platform-express';
 import { UploadController } from './controllers/upload.controller';
+import { ProductionController } from './controllers/Production.controller';
+import { ProductionData } from './entities/production.entitie';
+import { Well } from './entities/well.entitie';
+import { ProductionService } from './services/production.service';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -23,8 +26,9 @@ import { UploadController } from './controllers/upload.controller';
         synchronize: true,
       }),
     }),
+    TypeOrmModule.forFeature([ProductionData, Well]),
   ],
-  controllers: [UploadController],
-  providers: [],
+  controllers: [UploadController, ProductionController],
+  providers: [ProductionService],
 })
 export class AppModule {}

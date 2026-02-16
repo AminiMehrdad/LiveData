@@ -13,13 +13,13 @@ export class Well {
   @Column({ unique: true })
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   lat?: string;
 
-  @Column()
+  @Column({ nullable: true })
   lng?: string;
 
-  @Column()
+  @Column({ nullable: true })
   drilingcost?: string;
 
   @CreateDateColumn()
