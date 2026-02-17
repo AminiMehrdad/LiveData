@@ -4,9 +4,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UploadController } from './controllers/upload.controller';
 import { ProductionController } from './controllers/Production.controller';
+import { DataController } from './controllers/data.controller';
 import { ProductionData } from './entities/production.entitie';
 import { Well } from './entities/well.entitie';
-import { ProductionService } from './services/production.service';
+import { DataService } from './services/data.service';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -28,7 +30,7 @@ import { ProductionService } from './services/production.service';
     }),
     TypeOrmModule.forFeature([ProductionData, Well]),
   ],
-  controllers: [UploadController, ProductionController],
-  providers: [ProductionService],
+  controllers: [UploadController, ProductionController, DataController],
+  providers: [DataService],
 })
 export class AppModule {}

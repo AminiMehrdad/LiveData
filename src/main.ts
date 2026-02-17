@@ -1,30 +1,32 @@
 // src/main.ts
+import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const rabbit = process.env.RABBITMQ_URL || 'amqp://localhost:5672';
 
-  // configure Swagger
-  const config = new DocumentBuilder()
-    .setTitle('Well Production API')
-    .setDescription('API for time-series well production data')
-    .setVersion('1.0')
-    .addTag('wells')
-    .addTag('production')
-    .build();
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
+    transport: Transport.RMQ,
+    options: {
+      urls: [rabbit],
+      queue: 'production_queue',
+      queueOptions: {
+        durable: false,
+      },
+    },
+  });
 
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
-  // --------------------------------------------------------
+  await app.listen();
+  console.log('Rabbit consumer microservice listening (production_queue)');
 
-  const configService = app.get(ConfigService);
-  const port = configService.get('PORT') || 3000;
-  await app.listen(port);
-
-  console.log(`🚀 HTTP Server running on: http://localhost:${port}`);
+  bootstrap().catch((err) => {
+    console.error('Microservice bootstrap error', err);
+    process.exit(1);
+  });
 }
 
 bootstrap();
