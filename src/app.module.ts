@@ -2,12 +2,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UploadController } from './controllers/upload.controller';
-import { ProductionController } from './controllers/Production.controller';
-import { DataController } from './controllers/data.controller';
 import { ProductionData } from './entities/production.entitie';
 import { Well } from './entities/well.entitie';
-import { DataService } from './services/data.service';
+import { CsvReaderService } from './services/csvReader.service';
+
 
 @Module({
   imports: [
@@ -15,22 +13,22 @@ import { DataService } from './services/data.service';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    TypeOrmModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get('DB_HOST'),
-        port: configService.get('DB_PORT'),
-        username: configService.get('DB_USERNAME'),
-        password: configService.get('DB_PASSWORD'),
-        database: configService.get('DB_DATABASE'),
-        autoLoadEntities: true,
-        synchronize: true,
-      }),
+
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: process.env.DB_HOST ?? "localhost",
+      port: parseInt(process.env.DB_PORT ?? '5432', 10),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE,
+      autoLoadEntities: true,
+      synchronize: true, 
+      
     }),
-    TypeOrmModule.forFeature([ProductionData, Well]),
+    
+    // TypeOrmModule.forFeature([ProductionData, Well]),
   ],
-  controllers: [UploadController, ProductionController, DataController],
-  providers: [DataService],
+  controllers: [],
+  providers: [CsvReaderService],
 })
 export class AppModule {}
