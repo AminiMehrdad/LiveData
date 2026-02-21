@@ -20,16 +20,16 @@ export class ProductionData {
   date: Date;
 
   @Column('float', { nullable: true })
-  temperature_down?: number;
+  down_temperature?: number;
 
   @Column('float', { nullable: true })
-  chock_size?: number;
+  choke_size?: number;
 
   @Column('float', { nullable: true })
-  pressure_top?: number;
+  head_pressure?: number;
 
   @Column('float', { nullable: true })
-  temprature_top?: number;
+  head_tempereture?: number;
 
   @Column('float', { nullable: true })
   chocke_pressure?: number;
@@ -47,11 +47,11 @@ export class ProductionData {
   water_i?: number;
 
   @Column('varchar', { nullable: true })
-  FLOW_KIND?: string;
+  flow?: string;
 
   @Column('float', { nullable: true })
-  hover_open?: number;
+  work_time?: number;
 
   @Column('float', { nullable: true })
-  pressure_down?: number;
+  down_pressure?: number;
 }

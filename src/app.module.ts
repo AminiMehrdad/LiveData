@@ -4,7 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductionData } from './entities/production.entitie';
 import { Well } from './entities/well.entitie';
-import { CsvReaderService } from './services/csvReader.service';
+import { CsvBootstrapService } from './services/csvReader.service';
 
 
 @Module({
@@ -13,7 +13,7 @@ import { CsvReaderService } from './services/csvReader.service';
       isGlobal: true,
       envFilePath: '.env',
     }),
-
+    TypeOrmModule.forFeature([ProductionData, Well]),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST ?? "localhost",
@@ -29,6 +29,6 @@ import { CsvReaderService } from './services/csvReader.service';
     // TypeOrmModule.forFeature([ProductionData, Well]),
   ],
   controllers: [],
-  providers: [CsvReaderService],
+  providers: [CsvBootstrapService],
 })
 export class AppModule {}
