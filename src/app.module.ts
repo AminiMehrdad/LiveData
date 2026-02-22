@@ -6,6 +6,8 @@ import { ProductionData } from './entities/production.entitie';
 import { Well } from './entities/well.entitie';
 import { CsvBootstrapService } from './services/csvReader.service';
 import { RedisModule } from './Redis/redis.module';
+import { SenderService } from './services/sender.service';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
@@ -24,11 +26,28 @@ import { RedisModule } from './Redis/redis.module';
       autoLoadEntities: true,
       synchronize: true,
     }),
+
+    ClientsModule.register([
+      {
+        name: 'RABBITMQ_SERVICE',
+        transport: Transport.RMQ,
+        options: {
+          urls: [process.env.RABBITMQ_URL || 'amqp://admin:admin123@localhost:5672'],
+          queue: 'data_queue',
+          queueOptions: {
+            durable: true,
+          },
+        },
+      },
+    ]),
     RedisModule,
 
     // TypeOrmModule.forFeature([ProductionData, Well]),
   ],
   controllers: [],
-  providers: [CsvBootstrapService],
+  providers: [
+    CsvBootstrapService,
+    SenderService
+  ],
 })
 export class AppModule {}
