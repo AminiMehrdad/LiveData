@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductionData } from './entities/production.entitie';
 import { Well } from './entities/well.entitie';
 import { CsvBootstrapService } from './services/csvReader.service';
-
+import { RedisModule } from './Redis/redis.module';
 
 @Module({
   imports: [
@@ -16,16 +16,16 @@ import { CsvBootstrapService } from './services/csvReader.service';
     TypeOrmModule.forFeature([ProductionData, Well]),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.DB_HOST ?? "localhost",
+      host: process.env.DB_HOST ?? 'localhost',
       port: parseInt(process.env.DB_PORT ?? '5432', 10),
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       autoLoadEntities: true,
-      synchronize: true, 
-      
+      synchronize: true,
     }),
-    
+    RedisModule,
+
     // TypeOrmModule.forFeature([ProductionData, Well]),
   ],
   controllers: [],

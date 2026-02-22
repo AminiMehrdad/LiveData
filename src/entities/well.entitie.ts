@@ -11,7 +11,7 @@ export class Well {
   id: number;
 
   @Column({ unique: true })
-  name: string;
+  well_name: string;
 
   @Column({ nullable: true })
   lat?: string;
