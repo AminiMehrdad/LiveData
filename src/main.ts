@@ -11,6 +11,7 @@ async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule);
 
+  app.enableShutdownHooks();
   await app.listen();
   console.log('Rabbit consumer microservice listening (production_queue)');
 
